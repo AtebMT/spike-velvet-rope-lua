@@ -35,15 +35,24 @@ end
 -- So, the user is not already in the site, shall we allow them access?
 
 -- In future, can get the capacity from the dictionary.
-local capacity = 500
-local keys, err = velvetrope:get_keys(capacity)
+local capacity = 5000
 
-if err then
-  -- What else can we do here? Can't get the dict size. Best allow people in I guess?
-  return ngx.exit(ngx.OK)
+-- getting the number of users in trhe dictionary is a slow process,
+-- so, we save the last gleaned value in the dictionary.
+local currentlyIn = velvetrope:get("dict_size")
+
+-- If we don't have a value (key expired) do the slow process to get it from the dictionary
+if currentlyIn == nil then
+  local keys, err = velvetrope:get_keys(capacity)
+
+  if err then
+    -- What else can we do here? Can't get the dict size. Best allow people in I guess?
+    return ngx.exit(ngx.OK)
+  end
+
+  currentlyIn = table.getn(keys)
+  velvetrope:set("dict_size", currentlyIn, 10)
 end
-
-local currentlyIn = table.getn(keys)
 
 -- Get the type of user
 local typeOfUser, err = usertypecache:get(userCacheKey)

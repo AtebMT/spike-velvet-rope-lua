@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-const NUMBER_OF_USERS=1000;
+const NUMBER_OF_USERS=10000;
 
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
