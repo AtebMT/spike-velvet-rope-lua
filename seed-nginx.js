@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-const NUMBER_OF_USERS=10000;
+const NUMBER_OF_USERS=12000;
 
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
@@ -22,7 +22,7 @@ function getNumberOfUsersFromPercentage(percentage) {
 
 async function setUserType(type, numberOfUsers, startIndex) {
   for (var i = startIndex; i < numberOfUsers; i++) {
-    const key = `key-${indexes[i]}`;
+    const key = `46663dea-c4b3-442a-ab9c-af402f3b9c15-${indexes[i]}`;
 
     await fetch(`http://localhost:9001/velvet-rope/add-user-type/${key}/${type}`);
   }
