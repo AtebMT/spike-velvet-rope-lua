@@ -11,7 +11,7 @@ if domain ~= nil then
 
   local currentlyIn = #keys
 
-  return ngx.say(currentlyIn .. " users. " .. ngx.var.host ..)
+  return ngx.say(currentlyIn .. " users. " .. ngx.var.host)
 end
 
 return ngx.say('Unknown domain ' .. ngx.var.host)
