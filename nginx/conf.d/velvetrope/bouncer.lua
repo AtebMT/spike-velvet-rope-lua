@@ -10,6 +10,11 @@ local function addUserToCache(userKey, typeOfUser, cache, metadatacache)
 end
 
 local function checkAccess()
+  ngx.log(ngx.DEBUG, ngx.var.uri)
+  if ngx.var.uri == '/maintenance/limit-fmp.html' then
+    return ngx.OK
+  end
+
   local lookupDomains = require "velvetrope/lookupDomains"
   local domain = lookupDomains.getDomainAbbreviation(ngx.var.host) or 'uk'
 
@@ -45,9 +50,7 @@ local function checkAccess()
 
   if bouncerDisabled == false and (currentlyIn == capacity or weighting < 0.3) then
     metadatacache:incr('denied', 1, 0)
-    ngx.status = 503
-    ngx.print('Disallowed request')
-    return ngx.exit(ngx.OK) 
+    return ngx.exit(ngx.HTTP_SERVICE_UNAVAILABLE)
   end
 
   addUserToCache(userKey, typeOfUser, velvetrope, metadatacache)

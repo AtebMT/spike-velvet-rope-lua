@@ -15,7 +15,12 @@ local function generateNumberOfUserRequestsMetric(access, environment)
 end
 
 local function generateVelvetRopeDisabledMetric(environment)
-    return string.format("velvet_rope_disabled_gauge{environment=\"%s\",job=\"velvetrope\"} %s \n", environment, meta:get('disabled'))
+    local isDisabled = 0
+    if meta:get('disabled') then 
+        isDisabled = 1 
+    end
+    
+    return string.format("velvet_rope_disabled_gauge{environment=\"%s\",job=\"velvetrope\"} %u \n", environment, isDisabled)
 end
 
 return ngx.say(

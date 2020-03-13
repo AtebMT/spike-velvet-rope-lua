@@ -22,7 +22,7 @@ function updateUserCount(premature)
           return
         end
         -- Set timer immediately so it will always run on the 10s mark
-        local ok, err = ngx.timer.at(1, updateUserCount)
+        local ok, err = ngx.timer.at(5, updateUserCount)
         if not ok then
             ngx.log(ngx.ERR, "Failed to start background thread: "..err)
         end
