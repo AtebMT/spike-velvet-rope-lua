@@ -1,7 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 
-const numberOfKeys = 1000000;
+const numberOfKeys = 10000;
 const stream = fs.createWriteStream("tests/user-keys.csv", { flags: 'a' });
 
 [...Array(numberOfKeys)].forEach(function (item, index) {

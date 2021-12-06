@@ -3,9 +3,9 @@ settings:
 
 execution:
 - concurrency: 100
-  ramp-up: 1m
-  hold-for: 10m
-  throughput: 5000
+  ramp-up: 5m
+  hold-for: 15m
+  throughput: 3000
   scenario: velvetrope-session
 
 scenarios:
