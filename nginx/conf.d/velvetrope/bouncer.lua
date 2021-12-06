@@ -10,7 +10,6 @@ local function addUserToCache(userKey, typeOfUser, cache, metadatacache)
 end
 
 local function checkAccess()
-  ngx.log(ngx.DEBUG, ngx.var.uri)
   if ngx.var.uri == '/maintenance/limit-fmp.html' then
     return ngx.OK
   end
@@ -21,33 +20,34 @@ local function checkAccess()
   local velvetrope = ngx.shared['velvetrope_' .. domain]
   local metadatacache = ngx.shared.velvetrope_metadata
 
-  local userKey = ngx.var.cookie__integrationLdkey
+  local userKey = ngx.var.cookie_USER_KEY
+
   -- If no userkey then first time visitor. Allow them in ?
   if not userKey then
     return ngx.OK
   end
-
+  
   -- Get the type of user
   local typeOfUser = ngx.var.cookie_userContext or 1
   local alreadyIn = velvetrope:get(userKey) 
-
+  
   if alreadyIn ~= nil then
     addUserToCache(userKey, typeOfUser, velvetrope, metadatacache)
-  
+    
     return ngx.OK
   end
-
+  
   -- So, the user is not already in the site, shall we allow them access?
-
+  
   local capacity = metadatacache:get('capacity') or 5000
-
+  
   local currentlyIn = metadatacache:get("all_num_users")
   
   local fullRatio = currentlyIn / capacity
   local weighting = (1 - fullRatio) * typeOfUser * 10
   
   local bouncerDisabled = metadatacache:get("disabled") or false
-
+  
   if bouncerDisabled == false and (currentlyIn == capacity or weighting < 0.3) then
     metadatacache:incr('denied', 1, 0)
     return ngx.exit(ngx.HTTP_SERVICE_UNAVAILABLE)

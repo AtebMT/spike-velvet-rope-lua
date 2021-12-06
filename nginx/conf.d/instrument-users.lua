@@ -1,7 +1,7 @@
 local _M = {}
 
 local function instrumentUsers()
-  local lookupDomains = require "velvetrope/lookup_domains"
+  local lookupDomains = require "velvetrope/lookupDomains"
   local domain = lookupDomains.getDomainAbbreviation(ngx.var.host)
 
   if domain ~= nil then

@@ -1,0 +1,21 @@
+settings:
+  default-executor: gatling
+
+execution:
+- concurrency: 100
+  ramp-up: 1m
+  hold-for: 10m
+  throughput: 5000
+  scenario: velvetrope-session
+
+scenarios:
+  velvetrope-session:
+    data-sources:
+      - path: user-keys.csv
+        delimiter: ","
+        loop: true
+    requests:
+      - url: http://localhost:9000/test
+    method: GET
+    headers: 
+      cookie: "USER_KEY=${key}"
